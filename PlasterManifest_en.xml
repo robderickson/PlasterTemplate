@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<plasterManifest
+  schemaVersion="1.0" xmlns="http://www.microsoft.com/schemas/PowerShell/Plaster/v1">
+  <metadata>
+    <name>RobCustomTemplate</name>
+    <id>9dc3ef2c-422c-46e6-a06d-f9515a659943</id>
+    <version>0.0.1</version>
+    <title>Rob Custom Template</title>
+    <description></description>
+    <author>Rob Derickson</author>
+    <tags></tags>
+  </metadata>
+  <parameters>
+    <parameter name="ModuleName" type="text" prompt="Name of this module" />
+    <parameter name="ModuleDesc" type="text" prompt="Brief description of this module" />
+    <parameter name="ModuleVersion" type="text" prompt="Version number" default="0.0.1" />
+    <parameter name="ModuleAuthor" type="user-fullname" prompt="Author" />
+    <parameter name="DataFolder" type="choice" prompt="Include a Data folder?" default="0">
+      <choice label="&amp;Yes" help="Adds a Data folder to module Src" value="Yes" />
+      <choice label="&amp;No" help=" Does not add a Data folder to module Src" value="No" />
+    </parameter>
+  </parameters>
+  <content>
+    <message> Creating folders for module: $PLASTER_PARAM_ModuleName </message>
+    <file source='' destination='Docs\' />
+    <file source='' destination='Src\' />
+    <file source='' destination='Tests\' />
+    <file source='' destination='Src\Private\' />
+    <file source='' destination='Src\Public\' />
+    <file condition='$PLASTER_PARAM_DataFolder -eq "Yes"' source='' destination='Src\Data\' />
+    <newModuleManifest
+      destination='Src\${PLASTER_PARAM_ModuleName}.psd1'
+      moduleVersion='$PLASTER_PARAM_ModuleVersion'
+      rootModule='${PLASTER_PARAM_ModuleName}.psm1'
+      author='$PLASTER_PARAM_ModuleAuthor'
+      description='$PLASTER_PARAM_ModuleDesc' />
+    <file source='Template.psm1' destination='Src\${PLASTER_PARAM_ModuleName}.psm1' />
+    <file source='BasicTest.ps1' destination='Tests\${PLASTER_PARAM_ModuleName}.tests.ps1' />
+  </content>
+</plasterManifest>
